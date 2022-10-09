@@ -59,7 +59,7 @@ functions:
           # authorizer: Auth
     iamRoleStatementsInherit: true
     iamRoleStatements:
-      - Efect: Allow
+      - Effect: Allow
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.environment.TODOS_TABLE}
@@ -82,7 +82,7 @@ functions:
               application/json: ${file(models/create-todo-model.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
-      - Efect: Allow
+      - Effect: Allow
         Action:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.environment.TODOS_TABLE}
@@ -102,7 +102,7 @@ functions:
               application/json: ${file(models/update-todo-model.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
-      - Efect: Allow
+      - Effect: Allow
         Action:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.environment.TODOS_TABLE}
@@ -119,7 +119,7 @@ functions:
           authorizer: Auth
     iamRoleStatementsInherit: true
     iamRoleStatements:
-      - Efect: Allow
+      - Effect: Allow
         Action:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.environment.TODOS_TABLE}
@@ -136,11 +136,11 @@ functions:
           authorizer: Auth
     iamRoleStatementsInherit: true
     iamRoleStatements:
-      - Efect: Allow
+      - Effect: Allow
         Action:
           - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.environment.TODOS_TABLE}
-      - Efect: Allow
+      - Effect: Allow
         Action:
           - s3:PutObject
         Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
