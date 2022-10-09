@@ -1,21 +1,40 @@
 import 'source-map-support/register'
-
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
-
-import { createAttachmentPresignedUrl } from '../../businessLogic/todos'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { createAttachmentPresignedUrl, userExists } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
 
-export const handler = middy(
-  async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const todoId = event.pathParameters.todoId
-    // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
-    
+export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const todoId = event.pathParameters.todoId
+  const userId = getUserId(event)
 
-    return undefined
+  // Validates if a user exist, so as to prevent just anyone from putting objects in our s3 bucket
+  const validUser = await userExists(userId, todoId)
+
+  // If a user does not exist, return an error
+  if (!validUser) {
+    return {
+      statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        error: 'User does not exist'
+      })
+    }
   }
-)
+ 
+  // If a user exist, go ahead to generate a signedUrl
+  const url = await createAttachmentPresignedUrl(todoId)
+
+  return {
+    statusCode: 201,
+    body: JSON.stringify({
+      uploadUrl : url
+    })
+  }
+})
 
 handler
   .use(httpErrorHandler())
@@ -23,4 +42,4 @@ handler
     cors({
       credentials: true
     })
-  )
+ )

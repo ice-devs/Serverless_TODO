@@ -6,13 +6,29 @@ import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 import { getUserId } from '../utils';
 import { createTodo } from '../../businessLogic/todos'
 
-export const handler = middy(
-  async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const newTodo: CreateTodoRequest = JSON.parse(event.body)
-    // TODO: Implement creating a new TODO item
+// import { ResourceClient } from '@ionic/cli/lib/http'
 
-    return undefined
-)
+export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const parsedBody: CreateTodoRequest = JSON.parse(event.body)
+  const userId = getUserId(event)
+
+  const result = await createTodo (parsedBody, userId)
+
+  const newItems = {
+    todoId: result.todoId,
+    createdAt: result.createdAt,
+    name: result.name,
+    dueDate: result.dueDate,
+    attachmentUrl: result.attachmentUrl
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      item: newItems
+    })
+  }
+})
 
 handler.use(
   cors({
