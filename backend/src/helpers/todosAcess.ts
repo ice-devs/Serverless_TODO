@@ -76,5 +76,5 @@ export class TodosAccess{
             }
           }).promise()
         return !!result.Item
-      }
+    }
 }
