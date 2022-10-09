@@ -69,16 +69,12 @@ export class TodosAccess{
     }
 
     async userExists(user: string) {
-        const result = await this.docClient
-          .get({
+        const result = await this.docClient.get({
             TableName: this.groupsTable,
             Key: {
               userId: user
             }
-          })
-          .promise()
-      
-        console.log('Get group: ', result)
+          }).promise()
         return !!result.Item
       }
 }
