@@ -1,10 +1,44 @@
 import { TodosAccess } from './todosAcess'
-import { AttachmentUtils } from './attachmentUtils';
+// import { AttachmentUtils } from './attachmentUtils';
 import { TodoItem } from '../models/TodoItem'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
-import { createLogger } from '../utils/logger'
-import * as uuid from 'uuid'
-import * as createError from 'http-errors'
+// import { createLogger } from '../utils/logger'
+// import * as createError from 'http-errors'
+
+const uuid = require('uuid')
+const bucketName = process.env.ATTACHMENT_S3_BUCKET
 
 // TODO: Implement businessLogic
+const todosAcess = new TodosAccess
+
+export async function createTodo (parsedBody: CreateTodoRequest, userId:string): Promise<TodoItem> {
+    const todoId = uuid.v4()
+    const createdAt = new Date().toISOString()
+    const attachmentUrl = 'https://'+bucketName+'.s3.amazonaws.com/'+todoId
+    return await todosAcess.createTodo({
+        userId: userId,
+        todoId: todoId,
+        createdAt: createdAt,
+        name: parsedBody.name,
+        dueDate: parsedBody.dueDate,
+        done: false,
+        attachmentUrl: attachmentUrl
+    })
+}
+
+export async function deleteTodo (userId: string, todoId:string) {
+    return await todosAcess.deleteTodo(userId, todoId)
+}
+
+export async function getTodosForUser(userId:string) {
+    return await todosAcess.getTodosForUser(userId)
+}
+
+export async function updateTodo(userId:string, todoId:string, updatedTodo:UpdateTodoRequest) {
+    return await todosAcess.updateTodo(userId, todoId, {
+        name: updatedTodo.name,
+        dueDate: updatedTodo.dueDate,
+        done: updatedTodo.done
+    })
+}
