@@ -13,13 +13,13 @@ import { TodoUpdate } from '../models/TodoUpdate';
 export class TodosAccess{
     constructor(
         private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient(),
-        private readonly groupsTable = process.env.GROUPS_TABLE,
+        private readonly todosTable = process.env.TODOS_TABLE,
         private readonly indexName = process.env.TODOS_CREATED_AT_INDEX){
         }
 
     async createTodo(Item: TodoItem): Promise<TodoItem> {
         await this.docClient.put({
-            TableName: this.groupsTable,
+            TableName: this.todosTable,
             Item
         }).promise()
         return Item
@@ -27,7 +27,7 @@ export class TodosAccess{
 
     async deleteTodo(userId:string, todoId:string) {
         await this.docClient.delete({
-            TableName: this.groupsTable,
+            TableName: this.todosTable,
             Key:{
                 userId,
                 todoId
@@ -37,7 +37,7 @@ export class TodosAccess{
 
     async getTodosForUser(userId:string): Promise<TodoItem[]> {
         const result = await this.docClient.query({
-            TableName: this.groupsTable,
+            TableName: this.todosTable,
             IndexName: this.indexName,
             KeyConditionExpression: 'userId = :userId',
             ExpressionAttributeValues:{
@@ -52,7 +52,7 @@ export class TodosAccess{
     
     async updateTodo(userId: string, todoId: string, updatedTodo:TodoUpdate) {
         await this.docClient.update({
-            TableName: this.groupsTable,
+            TableName: this.todosTable,
             Key: {
                 userId: userId,
                 todoId: todoId
@@ -70,7 +70,7 @@ export class TodosAccess{
 
     async userExists(user: string) {
         const result = await this.docClient.get({
-            TableName: this.groupsTable,
+            TableName: this.todosTable,
             Key: {
               userId: user
             }
