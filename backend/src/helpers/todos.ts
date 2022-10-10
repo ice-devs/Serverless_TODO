@@ -49,6 +49,6 @@ export async function createAttachmentPresignedUrl(todoId: string) {
 }
 
 // Additional helper function to check if a user exists
-export async function userExists(userId: string) {
-    return await todosAcess.userExists(userId)
+export async function userExists(userId: string, todoId:string) {
+    return await todosAcess.userExists(userId, todoId)
 }

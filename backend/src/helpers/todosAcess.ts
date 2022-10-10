@@ -26,13 +26,13 @@ export class TodosAccess{
     }
 
     async deleteTodo(userId:string, todoId:string) {
-        await this.docClient.delete({
+        return await this.docClient.delete({
             TableName: this.todosTable,
             Key:{
-                userId,
-                todoId
+                userId: userId,
+                todoId: todoId
             }
-        })
+        }).promise()
     }
 
     async getTodosForUser(userId:string): Promise<TodoItem[]> {
@@ -51,28 +51,32 @@ export class TodosAccess{
     }
     
     async updateTodo(userId: string, todoId: string, updatedTodo:TodoUpdate) {
-        await this.docClient.update({
+        return await this.docClient.update({
             TableName: this.todosTable,
             Key: {
                 userId: userId,
                 todoId: todoId
             },
-            UpdateExpression: 'set name = :name, dueDate = :dueDate, done = :done',
+            UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
             ConditionExpression: 'todoId = :todoId',
             ExpressionAttributeValues:{
                 ':todoId' : todoId,
                 ':name' : updatedTodo.name,
                 ':dueDate' : updatedTodo.dueDate,
                 ':done': updatedTodo.done
+            },
+            ExpressionAttributeNames:{
+                '#name': 'name'
             }
-        })
+        }).promise()
     }
 
-    async userExists(user: string) {
+    async userExists(userId: string, todoId: string) {
         const result = await this.docClient.get({
             TableName: this.todosTable,
             Key: {
-              userId: user
+              userId: userId,
+              todoId: todoId
             }
           }).promise()
         return !!result.Item

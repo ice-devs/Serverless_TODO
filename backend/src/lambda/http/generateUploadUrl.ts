@@ -10,7 +10,7 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   const userId = getUserId(event)
 
   // Validates if a user exist, so as to prevent just anyone from putting objects in our s3 bucket
-  const validUser = await userExists(userId)
+  const validUser = await userExists(userId, todoId)
 
   // If a user does not exist, return an error
   if (!validUser) {
