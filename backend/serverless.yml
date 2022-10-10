@@ -16,9 +16,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
-  # tracing:
-  #   lambda: true
-  #   apiGateway: true
+  tracing:
+    lambda: true
+    apiGateway: true
 
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
@@ -27,6 +27,7 @@ provider:
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
     ATTACHMENT_S3_BUCKET: ice-bucket-04-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    JWKS_URL: https://dev-3xb6q98a.us.auth0.com/.well-known/jwks.json
 
   logs:
     # Enable API Gateway logs
