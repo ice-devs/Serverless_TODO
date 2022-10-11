@@ -47,6 +47,7 @@ functions:
 
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
+    tracing: true
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property for performing Actions on DynamoDB
@@ -58,6 +59,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+    tracing: true
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -81,6 +83,7 @@ functions:
           request:
             schemas:
               application/json: ${file(models/create-todo-model.json)}
+    tracing: true
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -101,6 +104,7 @@ functions:
           request:
             schemas:
               application/json: ${file(models/update-todo-model.json)}
+    tracing: true
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -118,6 +122,7 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+    tracing: true
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
@@ -135,6 +140,7 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+    tracing: true
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
