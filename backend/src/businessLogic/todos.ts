@@ -3,8 +3,6 @@ import { AttachmentUtils } from '../fileStorage/attachmentUtils';
 import { TodoItem } from '../models/TodoItem'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
-// import { createLogger } from '../utils/logger'
-// import * as createError from 'http-errors'
 
 const uuid = require('uuid')
 const bucketName = process.env.ATTACHMENT_S3_BUCKET
