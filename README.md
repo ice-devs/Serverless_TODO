@@ -44,6 +44,15 @@ git clone https://github.com/ice-devs/Project-04-Serverless-App.git
 ```
 
 - ### Backend
+```yml
+  environment:
+    TODOS_TABLE:  // name you want to give your dtnamodb table
+    TODOS_CREATED_AT_INDEX: CreatedAtIndex // does not need to be changed
+    ATTACHMENT_S3_BUCKET: ice-bucket-04-${self:provider.stage} // s3 bucket name, it must be a unique value for your deployment to be successful
+    SIGNED_URL_EXPIRATION: 300 // does not need to be changed
+    JWKS_URL: // JSON Web Key set value that you copied from auth0
+```
+
 To deploy an application run the following commands:
 ```
 cd backend
