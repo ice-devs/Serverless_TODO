@@ -49,7 +49,7 @@ http://localhost:3000/callback)
 
 Clone the git repo
 ```
-git clone https://github.com/ice-devs/Project-04-Serverless-App.git
+git clone https://github.com/ice-devs/Serverless_TODO.git
 ```
 
 - ### Backend
