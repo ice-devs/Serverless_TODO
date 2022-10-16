@@ -38,32 +38,53 @@ This application will allow creating/removing/updating/fetching TODO items. Each
    sls config credentials --provider aws --key YOUR_ACCESS_KEY_ID --secret YOUR_SECRET_KEY --profile serverless
    ```
 ## Installation & Usage
+
+
+- ### Authentication
+  - To implement authentication in your application, you would have to create an Auth0 application and set the callbackUrl (for instance 
+http://localhost:3000/callback)
+  - We recommend using asymmetrically encrypted JWT tokens.
+  - THen you copy "domain", "client id", and "callback url" values which is used to configure the `client/src/config.ts` file in the `client` folder. 
+  - Also go to the application dashboard, click on advanced settings > Endpoints then copy the "JSON Web Key set" value under OAauth
+
 Clone the git repo
 ```
 git clone https://github.com/ice-devs/Project-04-Serverless-App.git
 ```
 
 - ### Backend
-```yml
-  environment:
-    TODOS_TABLE:  // name you want to give your dtnamodb table
-    TODOS_CREATED_AT_INDEX: CreatedAtIndex // does not need to be changed
-    ATTACHMENT_S3_BUCKET: ice-bucket-04-${self:provider.stage} // s3 bucket name, it must be a unique value for your deployment to be successful
-    SIGNED_URL_EXPIRATION: 300 // does not need to be changed
-    JWKS_URL: // JSON Web Key set value that you copied from auth0
-```
+Locate the `serverless.yml` file and make the following changes in the file in the `backend` folder
+  > Choose a name for your serverless org, app and service
 
-To deploy an application run the following commands:
+  ```yml
+  org:                          # serverless org name
+  app:                          # serverless app name
+  service:                      # service name that would be used by cloudformation
+  ```
+
+  > Update the values of environment variables ; TODOS_TABLE, ATTACHMENT_S3_BUCKET & JWKS_URL
+
+  > **Note:** S3 bucket name must be unique, to achieve this some numbers can be added to your assigned value, for instance "mybucket178"
+  ```yml
+  environment:
+    TODOS_TABLE: TableName-${self:provider.stage}               # Replace "TableName" with a new value
+    TODOS_CREATED_AT_INDEX: CreatedAtIndex                      # does not need to be changed
+    ATTACHMENT_S3_BUCKET: BucketName-${self:provider.stage}     # Replace "BuckectName" with a new value
+    SIGNED_URL_EXPIRATION: 300                                  # does not need to be changed
+    JWKS_URL:                                                   # "JSON Web Key set" value that you copied from auth0
+  ```
+
+After making the above changes deploy the application by running the following commands:
+
+> Change directory into the backend folder
 ```
 cd backend
-npm install
-sls deploy -verbose
 ```
-
-- ### Authentication
-To implement authentication in your application, you would have to create an Auth0 application and set the callbackUrl then copy "domain", "client id", and "callback url" values to the `client/src/config.ts` file in the `client` folder. We recommend using asymmetrically encrypted JWT tokens.
-
-Also go to the application dashboard, click on advanced settings > Endpoints then copy the "JSON Web Key set" value under OAauth
+> Install dependencies and deploy
+```
+npm install
+sls deploy --verbose
+```
 
 - ### Frontend
 To run a client application first edit the `client/src/config.ts` file to set correct parameters.
