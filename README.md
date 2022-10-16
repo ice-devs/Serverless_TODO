@@ -41,11 +41,11 @@ This application will allow creating/removing/updating/fetching TODO items. Each
 
 
 - ### Authentication
-  - To implement authentication in your application, you would have to create an Auth0 application and set the callbackUrl (for instance 
+  - To implement authentication in your application, you would have to create an Auth0 application and set the callbackUrl value (for instance 
 http://localhost:3000/callback)
   - We recommend using asymmetrically encrypted JWT tokens.
-  - THen you copy "domain", "client id", and "callback url" values which is used to configure the `client/src/config.ts` file in the `client` folder. 
-  - Also go to the application dashboard, click on advanced settings > Endpoints then copy the "JSON Web Key set" value under OAauth
+  - Then you copy "domain", "client id", and "callback url" values which is used to configure the `client/src/config.ts` file in the `client` folder. 
+  - Also go to the application dashboard, click on **advanced settings > Endpoints**, then copy the "JSON Web Key set" value under OAauth
 
 Clone the git repo
 ```
